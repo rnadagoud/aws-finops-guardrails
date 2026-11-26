@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS FinOps Audit Report — 123456789012 (Demo SaaS Startup)</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #111827;
+      --border: #1f2937;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #10b981;
+      --high: #ef4444;
+      --medium: #f59e0b;
+      --low: #3b82f6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+    .hero {
+      background: var(--bg);
+      color: var(--text);
+      padding: 36px 24px;
+      border-bottom: 3px solid var(--accent);
+    }
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    h1 { font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+    .meta { color: var(--muted); font-size: 13.5px; }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .kpi-label { font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.6px; }
+    .kpi-value { font-size: 28px; font-weight: 800; margin-top: 4px; color: #ffffff; }
+    .kpi-value.green { color: #34d399; }
+    main { padding: 32px 24px 56px; }
+    h2 { font-size: 18px; margin-bottom: 14px; color: #0f172a; }
+    .table-wrap {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    th {
+      background: #f1f5f9;
+      text-align: left;
+      padding: 12px 14px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #475569;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    td {
+      padding: 14px;
+      border-bottom: 1px solid #f1f5f9;
+      vertical-align: top;
+    }
+    td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    td.strong { font-weight: 700; color: #047857; }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .badge-high { background: #fee2e2; color: #b91c1c; }
+    .badge-medium { background: #fef3c7; color: #b45309; }
+    .badge-low { background: #dbeafe; color: #1d4ed8; }
+    .res-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 700; color: #0f172a; }
+    .res-summary { color: #475569; margin-top: 4px; font-size: 13px; }
+    .cli-box {
+      margin-top: 8px;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      overflow-x: auto;
+    }
+    footer {
+      margin-top: 24px;
+      font-size: 12.5px;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <div class="eyebrow">AWS FinOps &amp; Hygiene Executive Report</div>
+      <h1>Infrastructure Waste &amp; Security Guardrails Audit</h1>
+      <div class="meta">
+        Account: <strong>123456789012 (Demo SaaS Startup)</strong> &bull;
+        Regions: <strong>ap-south-1, us-east-1</strong> (+ Global S3) &bull;
+        Generated: 2026-11-26 01:48 UTC
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Identified Monthly Savings</div>
+          <div class="kpi-value green">$472.61/mo</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Annualized Run-Rate Savings</div>
+          <div class="kpi-value green">$5,671.32/yr</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Total Actionable Findings</div>
+          <div class="kpi-value">9</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Severity Split</div>
+          <div class="kpi-value" style="font-size:20px; padding-top:6px;">
+            5 High &bull; 2 Med &bull; 2 Low
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>Prioritized Remediation Plan &amp; Copy-Paste CLI Commands</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Check</th>
+              <th>Category</th>
+              <th>Resource, Diagnosis &amp; CLI Remediation</th>
+              <th>Region</th>
+              <th class="num">Save / Mo</th>
+              <th class="num">Save / Yr</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td><span class="badge badge-high">HIGH</span></td>
+              <td><code>RDS-001</code></td>
+              <td><strong>Idle / Oversized RDS</strong></td>
+              <td>
+                <div class="res-id">staging-analytics-pg (db.m5.large, Multi-AZ)</div>
+                <div class="res-summary">14-day average CPU is 1.4% with near-zero DB connections. Staging DB left on Multi-AZ db.m5.large 24/7.</div>
+                <pre class="cli-box">aws rds modify-db-instance --region us-east-1 --db-instance-identifier staging-analytics-pg --no-multi-az --db-instance-class db.t4g.medium --apply-immediately</pre>
+              </td>
+              <td><code>us-east-1</code></td>
+              <td class="num">$225.00</td>
+              <td class="num strong">$2,700.00</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-high">HIGH</span></td>
+              <td><code>NET-002</code></td>
+              <td><strong>Idle / Low-Traffic NAT Gateway</strong></td>
+              <td>
+                <div class="res-id">nat-0a84f91e32b71c002 &amp; nat-0f19c82d44e10a119 (2 redundant dev AZs)</div>
+                <div class="res-summary">3 NAT Gateways provisioned in dev VPC; 2 AZs processed &lt;0.15 GB in 14 days + missing free S3 Gateway VPC Endpoint.</div>
+                <pre class="cli-box">aws ec2 delete-nat-gateway --region us-east-1 --nat-gateway-id nat-0a84f91e32b71c002</pre>
+              </td>
+              <td><code>us-east-1</code></td>
+              <td class="num">$65.70</td>
+              <td class="num strong">$788.40</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-high">HIGH</span></td>
+              <td><code>CMP-001</code></td>
+              <td><strong>Idle / Oversized EC2</strong></td>
+              <td>
+                <div class="res-id">i-094c2e17b83a510f4 (t3.xlarge)</div>
+                <div class="res-summary">14-day average CPU is 2.8% on legacy worker host. Candidate for t3.large / t4g.large Graviton right-sizing.</div>
+                <pre class="cli-box">aws ec2 stop-instances --region ap-south-1 --instance-ids i-094c2e17b83a510f4</pre>
+              </td>
+              <td><code>ap-south-1</code></td>
+              <td class="num">$60.80</td>
+              <td class="num strong">$729.60</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-high">HIGH</span></td>
+              <td><code>EBS-001</code></td>
+              <td><strong>Unattached EBS Volume</strong></td>
+              <td>
+                <div class="res-id">vol-07c3910ab52e8f110 (500 GB gp2)</div>
+                <div class="res-summary">500 GB gp2 volume in &#x27;available&#x27; state left behind after old migration cutover.</div>
+                <pre class="cli-box">aws ec2 create-snapshot --region us-east-1 --volume-id vol-07c3910ab52e8f110 --description &#x27;Pre-delete backup&#x27; &amp;&amp; aws ec2 delete-volume --region us-east-1 --volume-id vol-07c3910ab52e8f110</pre>
+              </td>
+              <td><code>us-east-1</code></td>
+              <td class="num">$50.00</td>
+              <td class="num strong">$600.00</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-high">HIGH</span></td>
+              <td><code>S3-001</code></td>
+              <td><strong>S3 Lifecycle &amp; Hygiene</strong></td>
+              <td>
+                <div class="res-id">s3://acme-app-debug-exports-2024</div>
+                <div class="res-summary">Bucket missing S3 Lifecycle policy (unbounded Standard-tier log growth) + PublicAccessBlock INCOMPLETE.</div>
+                <pre class="cli-box">aws s3api put-public-access-block --bucket acme-app-debug-exports-2024 --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true</pre>
+              </td>
+              <td><code>global</code></td>
+              <td class="num">$8.50</td>
+              <td class="num strong">$102.00</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-medium">MEDIUM</span></td>
+              <td><code>EBS-002</code></td>
+              <td><strong>GP2 to GP3 Upgrade</strong></td>
+              <td>
+                <div class="res-id">4x prod EBS volumes (1,200 GB total gp2)</div>
+                <div class="res-summary">In-use 1,200 GB gp2 volumes can be modified online with zero downtime to gp3 (~20% cheaper + 3,000 baseline IOPS).</div>
+                <pre class="cli-box">aws ec2 modify-volume --region us-east-1 --volume-id vol-01ab23cd45ef67890 --volume-type gp3</pre>
+              </td>
+              <td><code>us-east-1</code></td>
+              <td class="num">$24.00</td>
+              <td class="num strong">$288.00</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-medium">MEDIUM</span></td>
+              <td><code>ELB-001</code></td>
+              <td><strong>Idle Load Balancer</strong></td>
+              <td>
+                <div class="res-id">old-v1-api-alb (application)</div>
+                <div class="res-summary">Load balancer has 0 registered targets while incurring ~$16.43/mo fixed hourly charges.</div>
+                <pre class="cli-box">aws elbv2 delete-load-balancer --region ap-south-1 --load-balancer-arn arn:aws:elasticloadbalancing:ap-south-1:123456789012:loadbalancer/app/old-v1-api-alb/0000</pre>
+              </td>
+              <td><code>ap-south-1</code></td>
+              <td class="num">$16.43</td>
+              <td class="num strong">$197.16</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-low">LOW</span></td>
+              <td><code>EBS-003</code></td>
+              <td><strong>Aging EBS Snapshot</strong></td>
+              <td>
+                <div class="res-id">18x manual snapshots (&gt;180 days old, 850 GB source)</div>
+                <div class="res-summary">Orphaned pre-release snapshots &gt;180 days old with no Data Lifecycle Manager retention policy.</div>
+                <pre class="cli-box">aws ec2 delete-snapshot --region us-east-1 --snapshot-id snap-0abc12345def67890</pre>
+              </td>
+              <td><code>us-east-1</code></td>
+              <td class="num">$14.88</td>
+              <td class="num strong">$178.56</td>
+            </tr>
+            
+            <tr>
+              <td><span class="badge badge-low">LOW</span></td>
+              <td><code>NET-001</code></td>
+              <td><strong>Unassociated Elastic IP</strong></td>
+              <td>
+                <div class="res-id">eipalloc-04d8e91c22f0a1234 (3.110.x.x) + 1 more</div>
+                <div class="res-summary">2 unassociated IPv4 Elastic IPs incurring idle public IPv4 charges ($0.005/hr each).</div>
+                <pre class="cli-box">aws ec2 release-address --region ap-south-1 --allocation-id eipalloc-04d8e91c22f0a1234</pre>
+              </td>
+              <td><code>ap-south-1</code></td>
+              <td class="num">$7.30</td>
+              <td class="num strong">$87.60</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+      <footer>
+        Generated by <strong>aws-finops-guardrails</strong> (Rahul Nadagoud) &mdash; Metadata-only read scan; zero access to S3 objects, database rows, or secrets.
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
