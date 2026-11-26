@@ -12,7 +12,9 @@ Surprisingly, the AWS-managed `arn:aws:iam::aws:policy/ReadOnlyAccess` policy **
 
 ## Decision
 1. Provision a dedicated cross-account IAM Role (`aws_iam_role.readonly_auditor`) requiring **`sts:ExternalId`** on `sts:AssumeRole` (mitigating the confused-deputy problem) and capped at a 1-hour `max_session_duration`.
-2. Attach an **explicit, 19-action metadata-only inline IAM policy** covering strictly the API calls needed to detect our 8 infrastructure waste patterns (`ec2:Describe*`, `rds:DescribeDBInstances`, `s3:GetLifecycleConfiguration`, `cloudwatch:GetMetricStatistics`, `elasticloadbalancing:Describe*`, `ce:GetCostAndUsage`).
+2. Attach an **explicit, 19-action metadata-only inline IAM policy** split cleanly into:
+   - Unrestrictable account-level `Describe*` / `GetMetric*` actions on `resources = ["*"]`, and
+   - Resource-scoped metadata reads (`rds:DescribeDBInstances`, `budgets:ViewBudget`, and `s3:Get*Configuration` restricted via `aws:ResourceAccount` to the target AWS account's buckets only — verified in CI by Checkov `CKV_AWS_356`).
 3. **Never** include `s3:GetObject`, `secretsmanager:GetSecretValue`, `ssm:GetParameter*`, `kms:Decrypt`, or `dynamodb:Scan`/`GetItem`.
 
 ## Consequences

@@ -11,8 +11,16 @@ locals {
 
 # ------------------------------------------------------------------------------
 # KMS Key (Encrypted SNS Alerts — satisfies Checkov CKV_AWS_26 & KMS rotation)
+# Note: In an AWS KMS resource policy, resources = ["*"] refers strictly to THIS
+# KMS key (referencing aws_kms_key.this.arn creates a Terraform cycle). Checkov
+# evaluates standalone aws_iam_policy_document blocks as identity policies unless
+# annotated.
 # ------------------------------------------------------------------------------
 data "aws_iam_policy_document" "sns_kms" {
+  #checkov:skip=CKV_AWS_109:KMS key policy requires root delegation on "*" (refers only to this KMS key).
+  #checkov:skip=CKV_AWS_111:KMS key policy requires kms:* for account root and GenerateDataKey* for AWS Budgets/Anomaly services on this key.
+  #checkov:skip=CKV_AWS_356:AWS KMS key resource policies mandate Resource = "*" to represent the key itself without circular ARN references.
+
   statement {
     sid       = "EnableRootAccountPermissions"
     effect    = "Allow"
@@ -40,6 +48,12 @@ data "aws_iam_policy_document" "sns_kms" {
         "budgets.amazonaws.com",
         "costalerts.amazonaws.com"
       ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
     }
   }
 }
@@ -218,10 +232,9 @@ resource "aws_iam_role" "readonly_auditor" {
 data "aws_iam_policy_document" "readonly_auditor_permissions" {
   count = var.enable_readonly_audit_role ? 1 : 0
 
-  # Metadata-only read permissions required for the 8 waste checks.
-  # Explicitly excludes s3:GetObject, secretsmanager:GetSecretValue, ssm:GetParameter, dynamodb:Scan, etc.
+  # 1. Actions that AWS IAM does NOT allow scoping to specific resource ARNs.
   statement {
-    sid    = "MetadataOnlyWasteScan"
+    sid    = "UnrestrictableAccountMetadataDescribe"
     effect = "Allow"
     actions = [
       "ec2:DescribeVolumes",
@@ -230,22 +243,51 @@ data "aws_iam_policy_document" "readonly_auditor_permissions" {
       "ec2:DescribeInstances",
       "ec2:DescribeNatGateways",
       "ec2:DescribeRegions",
-      "rds:DescribeDBInstances",
       "s3:ListAllMyBuckets",
-      "s3:GetBucketLocation",
-      "s3:GetLifecycleConfiguration",
-      "s3:GetBucketPublicAccessBlock",
-      "s3:GetEncryptionConfiguration",
       "elasticloadbalancing:DescribeLoadBalancers",
       "elasticloadbalancing:DescribeTargetGroups",
       "elasticloadbalancing:DescribeTargetHealth",
       "cloudwatch:GetMetricStatistics",
       "cloudwatch:GetMetricData",
       "ce:GetCostAndUsage",
-      "budgets:ViewBudget",
       "sts:GetCallerIdentity"
     ]
     resources = ["*"]
+  }
+
+  # 2. Actions that support resource-level ARN scoping — restricted to this account's resources.
+  # Explicitly excludes s3:GetObject, secretsmanager:GetSecretValue, ssm:GetParameter, dynamodb:Scan, etc.
+  statement {
+    sid    = "ScopedAccountMetadataRead"
+    effect = "Allow"
+    actions = [
+      "rds:DescribeDBInstances",
+      "budgets:ViewBudget"
+    ]
+    resources = [
+      "arn:${data.aws_partition.current.partition}:rds:*:${data.aws_caller_identity.current.account_id}:db:*",
+      "arn:${data.aws_partition.current.partition}:budgets::${data.aws_caller_identity.current.account_id}:budget/*"
+    ]
+  }
+
+  statement {
+    sid    = "ScopedS3BucketHygieneMetadata"
+    effect = "Allow"
+    actions = [
+      "s3:GetBucketLocation",
+      "s3:GetLifecycleConfiguration",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:GetEncryptionConfiguration"
+    ]
+    resources = [
+      "arn:${data.aws_partition.current.partition}:s3:::*"
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceAccount"
+      values   = [data.aws_caller_identity.current.account_id]
+    }
   }
 }
 
